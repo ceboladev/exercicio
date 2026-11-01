@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Desempenho</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #87a7e7; margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { background: white; padding: 24px; border-radius: 12px; width: 100%; max-width: 600px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h2 { color: #1f2937; margin-top: 0; }
+        .card-stat { background: #f3f4f6; padding: 16px; border-radius: 8px; margin-bottom: 12px; font-size: 16px; color: #374151; }
+        .btn-voltar { width: 100%; padding: 12px; margin-top: 12px; border-radius: 8px; border: none; background: #2c3e50; color: white; font-weight: bold; cursor: pointer; }
+        .btn-voltar:hover { background: #1b2733; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>📊 Seu Desempenho</h2>
+    
+    <div class="card-stat" id="stat-respondidas">Total Respondidas: 0</div>
+    <div class="card-stat" id="stat-acertos">Acertos: 0</div>
+    <div class="card-stat" id="stat-erros">Erros: 0</div>
+    <div class="card-stat" id="stat-aproveitamento">Aproveitamento: 0%</div>
+
+    <button class="btn-voltar" onclick="window.location.href='simulador.html'">Voltar para o Simulador</button>
+</div>
+
+<script>
+    // Recupera o histórico salvo no navegador
+    const historico = JSON.parse(localStorage.getItem("historicoQuestoes")) || {};
+
+    let totalAcertos = 0;
+    let totalErros = 0;
+
+    // Padrão de Contagem/Estatística que você treinou!
+    const chavesRespostas = Object.keys(historico);
+    const totalRespondidas = chavesRespostas.length;
+
+    for (let i = 0; i < chavesRespostas.length; i++) {
+        const idQuestao = chavesRespostas[i];
+        if (historico[idQuestao] === true) {
+            totalAcertos++;
+        } else {
+            totalErros++;
+        }
+    }
+
+    let aproveitamento = 0;
+    if (totalRespondidas > 0) {
+        aproveitamento = (totalAcertos / totalRespondidas) * 100;
+    }
+
+    // Atualiza os elementos na tela do painel
+    document.getElementById("stat-respondidas").innerText = `Total Respondidas: ${totalRespondidas}`;
+    document.getElementById("stat-acertos").innerText = `Acertos: ${totalAcertos}`;
+    document.getElementById("stat-erros").innerText = `Erros: ${totalErros}`;
+    document.getElementById("stat-aproveitamento").innerText = `Aproveitamento: ${aproveitamento.toFixed(1)}%`;
+</script>
+
+</body>
+</html>

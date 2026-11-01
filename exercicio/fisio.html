@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Lucas Mendes | Fisioterapia Avançada e Reabilitação em Consultório</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome para Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #0f4c81;
+            --primary-dark: #0a3358;
+            --accent: #38b6ff;
+            --light: #f4f8fb;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --success: #25d366;
+            --transition: all 0.3s ease;
+        }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* Botão Flutuante do WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--success);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            color: white;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 999;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo span {
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--gray);
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            font-size: 15px;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .btn-cta-nav {
+            background-color: var(--primary);
+            color: white !important;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-cta-nav:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 160px 20px 100px;
+            background: linear-gradient(135deg, rgba(15, 76, 129, 0.05) 0%, rgba(56, 182, 255, 0.1) 100%);
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: 40px;
+            line-height: 1.2;
+            color: var(--dark);
+            margin-bottom: 20px;
+        }
+
+        .hero-content h1 span {
+            color: var(--primary);
+        }
+
+        .hero-content p {
+            font-size: 16px;
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+
+        .hero-badges {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dark);
+            flex-wrap: wrap;
+        }
+
+        .hero-badges div {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hero-badges i {
+            color: var(--primary);
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(15, 76, 129, 0.3);
+            transition: var(--transition);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .hero-image {
+            position: relative;
+        }
+
+        .hero-image img {
+            width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            object-fit: cover;
+            height: 450px;
+        }
+
+        /* Seção Sobre o Fisioterapeuta */
+        .about {
+            padding: 90px 20px;
+            background: white;
+        }
+
+        .about-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .about-content h2 {
+            font-size: 32px;
+            color: var(--dark);
+            margin-bottom: 20px;
+        }
+
+        .about-content p {
+            color: var(--gray);
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+
+        .about-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .about-feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--dark);
+        }
+
+        .about-feature-item i {
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        /* Especialidades / Tratamentos */
+        .treatments {
+            padding: 90px 20px;
+            background-color: var(--light);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 32px;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 15px;
+        }
+
+        .treatments-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .treatment-card {
+            background: white;
+            padding: 35px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            transition: var(--transition);
+            border-bottom: 4px solid transparent;
+        }
+
+        .treatment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border-bottom-color: var(--primary);
+        }
+
+        .treatment-card i {
+            font-size: 36px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .treatment-card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .treatment-card p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        /* Diferenciais do Consultório */
+        .clinic-diff {
+            padding: 90px 20px;
+            background: white;
+        }
+
+        .diff-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .diff-item {
+            text-align: center;
+            padding: 30px 20px;
+            background: var(--light);
+            border-radius: 12px;
+        }
+
+        .diff-item i {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .diff-item h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+
+        .diff-item p {
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        /* Depoimentos */
+        .testimonials {
+            padding: 90px 20px;
+            background-color: var(--light);
+        }
+
+        .testimonials-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .testimonial-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        .stars {
+            color: #f59e0b;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .testimonial-card p {
+            color: var(--gray);
+            font-style: italic;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .client-info h4 {
+            font-size: 16px;
+            color: var(--dark);
+        }
+
+        .client-info span {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        /* FAQ */
+        .faq {
+            padding: 90px 20px;
+            background: white;
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--light);
+            margin-bottom: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .faq-question {
+            padding: 20px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .faq-question:hover {
+            color: var(--primary);
+        }
+
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 0 20px 20px;
+            max-height: 200px;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        /* CTA Final */
+        .cta-section {
+            padding: 90px 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 34px;
+            margin-bottom: 20px;
+        }
+
+        .cta-section p {
+            font-size: 16px;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+        }
+
+        .btn-light {
+            background: white;
+            color: var(--primary);
+            padding: 15px 35px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: var(--transition);
+        }
+
+        .btn-light:hover {
+            background: var(--light);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 50px 20px 20px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        .footer-col p, .footer-col a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 14px;
+            display: block;
+            margin-bottom: 10px;
+            transition: var(--transition);
+        }
+
+        .footer-col a:hover {
+            color: white;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .social-icons a {
+            background: rgba(255,255,255,0.1);
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .social-icons a:hover {
+            background: var(--primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        /* Responsividade para Celulares */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: white;
+                padding: 20px;
+                box-shadow: 0 10px 10px rgba(0,0,0,0.05);
+                text-align: center;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .hero-container, .about-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-content h1 {
+                font-size: 32px;
+            }
+
+            .hero-badges {
+                justify-content: center;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .about-features {
+                grid-template-columns: 1fr;
+                justify-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Botão Fixo WhatsApp -->
+    <a href="https://wa.me/5500000000000?text=Olá,%20Dr.%20Lucas!%20Gostaria%20de%20agendar%20uma%20avaliação%20fisioterapêutica." target="_blank" class="whatsapp-float" aria-label="Contato WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Header / Navbar -->
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                Dr. Lucas Mendes
+                <span>FISIOTERAPIA AVANÇADA</span>
+            </a>
+            <div class="menu-toggle" id="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#sobre">Sobre Mim</a></li>
+                <li><a href="#tratamentos">Especialidades</a></li>
+                <li><a href="#consultorio">O Consultório</a></li>
+                <li><a href="#depoimentos">Depoimentos</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="https://wa.me/5500000000000?text=Olá,%20Dr.%20Lucas!%20Gostaria%20de%20agendar%20uma%20avaliação." target="_blank" class="btn-cta-nav">Agendar Consulta</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>Recupere seus movimentos e viva <span>sem dores crônicas</span></h1>
+                <p>Atendimento fisioterapêutico especializado, focado na causa raiz da sua dor com diagnóstico preciso, terapias manuais avançadas e reabilitação personalizada no meu próprio consultório.</p>
+                <div class="hero-badges">
+                    <div><i class="fas fa-check-circle"></i> Fisioterapeuta Especialista</div>
+                    <div><i class="fas fa-check-circle"></i> Consultório Particular</div>
+                    <div><i class="fas fa-check-circle"></i> Atendimento Individualizado</div>
+                </div>
+                <div class="hero-buttons">
+                    <a href="https://wa.me/5500000000000?text=Olá,%20Dr.%20Lucas!%20Gostaria%20de%20agendar%20uma%20avaliação." target="_blank" class="btn-primary">
+                        <i class="fab fa-whatsapp"></i> Agendar Avaliação por WhatsApp
+                    </a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=80" alt="Fisioterapeuta atendendo paciente no consultório">
+            </div>
+        </div>
+    </section>
+
+    <!-- Sobre o Fisioterapeuta -->
+    <section class="about" id="sobre">
+        <div class="about-container">
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=600&q=80" alt="Dr. Lucas Mendes Fisioterapeuta">
+            </div>
+            <div class="about-content">
+                <h2>Olá, sou o Dr. Lucas Mendes</h2>
+                <p>Sou fisioterapeuta com ampla experiência em reabilitação ortopédica, desportiva e tratamento de dores na coluna (lombalgia e cervicalgia). Meu objetivo não é apenas aliviar o sintoma momentâneo, mas investigar a verdadeira causa do seu problema.</p>
+                <p>No meu consultório próprio, ofereço uma estrutura completa e exclusiva, onde cada paciente recebe atenção 100% dedicada durante toda a sessão, sem divisórias ou atendimentos em massa.</p>
+                
+                <div class="about-features">
+                    <div class="about-feature-item">
+                        <i class="fas fa-user-md"></i> Crefito Ativo
+                    </div>
+                    <div class="about-feature-item">
+                        <i class="fas fa-clock"></i> Hora Marcada
+                    </div>
+                    <div class="about-feature-item">
+                        <i class="fas fa-hands-helping"></i> Abordagem Manual
+                    </div>
+                    <div class="about-feature-item">
+                        <i class="fas fa-clinic-medical"></i> Espaço Exclusivo
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tratamentos -->
+    <section class="treatments" id="tratamentos">
+        <div class="section-title">
+            <h2>Especialidades e Tratamentos</h2>
+            <p>Soluções avançadas para reabilitar seu corpo com segurança e eficácia.</p>
+        </div>
+        <div class="treatments-grid">
+            <div class="treatment-card">
+                <i class="fas fa-bone"></i>
+                <h3>Dores na Coluna e Lombar</h3>
+                <p>Tratamento especializado para hérnias de disco, ciatalgia, cervicalgia e dores lombares crônicas ou agudas.</p>
+            </div>
+            <div class="treatment-card">
+                <i class="fas fa-running"></i>
+                <h3>Reabilitação Esportiva</h3>
+                <p>Recuperação de lesões ligamentares, musculares e articulares para atletas de fim de semana ou profissionais.</p>
+            </div>
+            <div class="treatment-card">
+                <i class="fas fa-hand-paper"></i>
+                <h3>Terapia Manual e Osteopatia</h3>
+                <p>Técnicas manipulativas e miofasciais para restaurar a mobilidade articular e eliminar pontos de tensão.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Diferenciais do Consultório -->
+    <section class="clinic-diff" id="consultorio">
+        <div class="section-title">
+            <h2>Por que escolher o meu consultório?</h2>
+            <p>Estrutura pensada exclusivamente no seu conforto e recuperação rápida.</p>
+        </div>
+        <div class="diff-grid">
+            <div class="diff-item">
+                <i class="fas fa-user-shield"></i>
+                <h3>Atendimento Exclusivo</h3>
+                <p>Você é atendido individualmente, com foco total nos seus objetivos e no seu ritmo de evolução.</p>
+            </div>
+            <div class="diff-item">
+                <i class="fas fa-map-marked-alt"></i>
+                <h3>Localização de Fácil Acesso</h3>
+                <p>Consultório localizado em região central, com estacionamento próximo e total acessibilidade.</p>
+            </div>
+            <div class="diff-item">
+                <i class="fas fa-tools"></i>
+                <h3>Equipamentos Modernos</h3>
+                <p>Recursos terapêuticos atualizados para acelerar o processo de cicatrização e alívio da dor.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Depoimentos -->
+    <section class="testimonials" id="depoimentos">
+        <div class="section-title">
+            <h2>O que dizem os pacientes</h2>
+            <p>Histórias reais de quem voltou a ter qualidade de vida e movimento livre de dores.</p>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p>"Sofria com dores terríveis na lombar que me impediam de trabalhar. O Dr. Lucas identificou o problema na primeira consulta e o tratamento foi certeiro. Hoje estou sem dores!"</p>
+                <div class="client-info">
+                    <h4>Roberto Almeida</h4>
+                    <span>Empresário</span>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p>"Profissional extremamente competente, atencioso e pontual. O consultório é impecável e o atendimento é individual, o que faz toda a diferença comparado a clínicas tradicionais."</p>
+                <div class="client-info">
+                    <h4>Fernanda Costa</h4>
+                    <span>Arquiteta</span>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p>"Fiz reabilitação pós-cirúrgica do joelho com ele e alcancei 100% da mobilidade muito antes do esperado. Recomendo de olhos fechados!"</p>
+                <div class="client-info">
+                    <h4>Marcos Vinicius</h4>
+                    <span>Praticante de Corrida</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq" id="faq">
+        <div class="section-title">
+            <h2>Dúvidas Frequentes</h2>
+            <p>Tire suas dúvidas antes de agendar sua primeira avaliação.</p>
+        </div>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Como é feita a primeira consulta?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Na primeira consulta realizamos uma avaliação detalhada do seu histórico, testes ortopédicos e funcionais para identificar a causa da dor, seguido já de orientações e início do alívio sintomático.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>O atendimento é em grupo ou individual?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>O atendimento é 100% individual e personalizado. O Dr. Lucas dedica o horário exclusivamente a você, sem dividir a atenção com outros pacientes ao mesmo tempo.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Como faço para agendar um horário?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Basta clicar em qualquer um dos botões do WhatsApp na página. Você falará diretamente com o consultório para verificar os horários disponíveis na agenda.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final -->
+    <section class="cta-section">
+        <h2>Pronto para se livrar das dores e recuperar sua mobilidade?</h2>
+        <p>Agende sua avaliação no consultório hoje mesmo e dê o primeiro passo para uma vida com mais qualidade.</p>
+        <a href="https://wa.me/5500000000000?text=Olá,%20Dr.%20Lucas!%20Gostaria%20de%20agendar%20uma%20avaliação." target="_blank" class="btn-light">
+            <i class="fab fa-whatsapp"></i> Falar com o Dr. Lucas no WhatsApp
+        </a>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>Dr. Lucas Mendes</h3>
+                <p>Fisioterapia especializada com foco em reabilitação funcional, alívio de dores crônicas e qualidade de vida.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h3>Links Rápidos</h3>
+                <p><a href="#sobre">Sobre Mim</a></p>
+                <p><a href="#tratamentos">Especialidades</a></p>
+                <p><a href="#consultorio">O Consultório</a></p>
+                <p><a href="#depoimentos">Depoimentos</a></p>
+            </div>
+            <div class="footer-col">
+                <h3>Contato & Endereço</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Rua da Saúde, 400 - Sala 12 - Centro</p>
+                <p><i class="fas fa-phone-alt"></i> (00) 0000-0000</p>
+                <p><i class="fab fa-whatsapp"></i> (00) 90000-0000</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Dr. Lucas Mendes - Fisioterapia. Todos os direitos reservados. Responsável Técnico: Crefito Ativo.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Menu Responsivo Mobile
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenu.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Acordeão do FAQ
+        const faqItems = document.querySelectorAll('.faq-item');
+
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                item.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>

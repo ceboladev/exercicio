@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Questões</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #7fa3e9; margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { background: white; padding: 24px; border-radius: 12px; width: 100%; max-width: 600px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        
+        /* NOVO: Painel Superior / Header */
+        .header-painel { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f3f4f6; padding-bottom: 12px; margin-bottom: 16px; }
+        .header-painel h1 { font-size: 18px; color: #1f2937; margin: 0; }
+        .btn-painel-topo { background: #2c3e50; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold; }
+        .btn-painel-topo:hover { background: #1b2733; }
+
+        .info { color: #6b7280; font-size: 12px; margin-bottom: 8px; }
+        .enunciado { font-weight: bold; margin-bottom: 16px; color: #1f2937; }
+        button.alt { width: 100%; padding: 12px; margin-bottom: 8px; border-radius: 8px; border: 1px solid #d1d5db; background: white; cursor: pointer; text-align: left; font-size: 14px; transition: 0.2s; }
+        button.alt:hover { background: #f9fafb; }
+        .btn-acao { width: 100%; padding: 12px; margin-top: 12px; border-radius: 8px; border: none; background: #2c3e50; color: white; font-weight: bold; cursor: pointer; }
+        .btn-acao:hover { background: #1b2733; }
+        .menu-filtros { display: flex; gap: 8px; margin-bottom: 16px; }
+        .btn-filtro { padding: 6px 12px; border-radius: 6px; border: 1px solid #d1d5db; background: #f3f4f6; cursor: pointer; font-size: 12px; }
+        .btn-filtro:hover { background: #e5e7eb; }
+        .correta { background: #d1fae5 !important; border-color: #10b981 !important; color: #065f46; }
+        .errada { background: #fee2e2 !important; border-color: #ef4444 !important; color: #991b1b; }
+        .selecionada { background: #e0f2fe !important; border-color: #3b82f6 !important; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- PAINEL SUPERIOR / HEADER -->
+    <div class="header-painel">
+        <h1>⚡ Simulador de Estudos</h1>
+        <button class="btn-painel-topo" onclick="window.location.href='painel.html'">📊 Ver Painel</button>
+    </div>
+
+    <!-- MENU DE FILTROS -->
+    <div class="menu-filtros">
+        <button class="btn-filtro" onclick="filtrar('todas')">📋 Todas</button>
+        <button class="btn-filtro" onclick="filtrar('acertos')">✅ Acertos</button>
+        <button class="btn-filtro" onclick="filtrar('erros')">❌ Erros</button>
+    </div>
+
+    <div id="info-questao" class="info"></div>
+    <div id="enunciado" class="enunciado">Carregando questão...</div>
+    
+    <div id="alternativas"></div>
+
+    <button id="btn-verificar" class="btn-acao" style="display:none;" onclick="verificarResposta()">Verificar Resposta</button>
+    <button id="btn-proxima" class="btn-acao" style="display:none; background: #4b5563;" onclick="proximaQuestao()">Próxima Questão</button>
+</div>
+
+<script>
+    const questoesOriginais = [
+        {
+            id: 1,
+            disciplina: "Informática",
+            banca: "FUMARC",
+            ano: 2024,
+            enunciado: "Qual protocolo é utilizado de forma segura para navegação web criptografada?",
+            alternativas: [
+                { id: "a", texto: "HTTP", isCorreta: false },
+                { id: "b", texto: "HTTPS", isCorreta: true },
+                { id: "c", texto: "FTP", isCorreta: false }
+            ]
+        },
+        {
+            id: 2,
+            disciplina: "Direito Administrativo",
+            banca: "FGV",
+            ano: 2023,
+            enunciado: "São princípios expressos da Administração Pública na Constituição Federal, EXCETO:",
+            alternativas: [
+                { id: "a", texto: "Legalidade", isCorreta: false },
+                { id: "b", texto: "Moralidade", isCorreta: false },
+                { id: "c", texto: "Impunidade", isCorreta: true }
+            ]
+        },
+        {
+            id: 3,
+            disciplina: "Banco de Dados",
+            banca: "IBFC",
+            ano: 2023,
+            enunciado: "Em bancos de dados relacionais, qual comando SQL é utilizado para recuperar dados de uma tabela?",
+            alternativas: [
+                { id: "a", texto: "UPDATE", isCorreta: false },
+                { id: "b", texto: "SELECT", isCorreta: true },
+                { id: "c", texto: "INSERT", isCorreta: false }
+            ]
+        },
+        {
+            id: 4,
+            disciplina: "Legislação",
+            banca: "FUMARC",
+            ano: 2022,
+            enunciado: "A Lei Geral de Proteção de Dados (LGPD) é a lei federal número:",
+            alternativas: [
+                { id: "a", texto: "13.709/2018", isCorreta: true },
+                { id: "b", texto: "12.527/2011", isCorreta: false },
+                { id: "c", texto: "8.666/1993", isCorreta: false }
+            ]
+        }
+    ];
+
+    let questoesAtuais = [...questoesOriginais];
+    let indice = 0;
+    let selecionadaId = null;
+    let verificada = false;
+
+    let historico = JSON.parse(localStorage.getItem("historicoQuestoes")) || {};
+
+    function carregarQuestao() {
+        if (questoesAtuais.length === 0) {
+            document.getElementById("info-questao").innerText = "";
+            document.getElementById("enunciado").innerText = "Nenhuma questão encontrada para este filtro.";
+            document.getElementById("alternativas").innerHTML = "";
+            return;
+        }
+
+        const q = questoesAtuais[indice];
+        document.getElementById("info-questao").innerText = `${q.disciplina} • ${q.banca} • ${q.ano} (Questão ${indice + 1} de ${questoesAtuais.length})`;
+        document.getElementById("enunciado").innerText = q.enunciado;
+        
+        const divAlts = document.getElementById("alternativas");
+        divAlts.innerHTML = "";
+
+        q.alternativas.forEach(alt => {
+            const btn = document.createElement("button");
+            btn.className = "alt";
+            btn.innerText = alt.texto;
+            
+            if (verificada) {
+                if (alt.isCorreta) btn.classList.add("correta");
+                else if (alt.id === selecionadaId) btn.classList.add("errada");
+            } else if (alt.id === selecionadaId) {
+                btn.classList.add("selecionada");
+            }
+
+            btn.onclick = () => {
+                if (!verificada) {
+                    selecionadaId = alt.id;
+                    document.getElementById("btn-verificar").style.display = "block";
+                    carregarQuestao();
+                }
+            };
+            divAlts.appendChild(btn);
+        });
+    }
+
+    function verificarResposta() {
+        if (!selecionadaId) return;
+        verificada = true;
+
+        const q = questoesAtuais[indice];
+        const altEscolhida = q.alternativas.find(a => a.id === selecionadaId);
+
+        historico[q.id] = altEscolhida.isCorreta;
+        localStorage.setItem("historicoQuestoes", JSON.stringify(historico));
+
+        document.getElementById("btn-verificar").style.display = "none";
+        document.getElementById("btn-proxima").style.display = "block";
+        carregarQuestao();
+    }
+
+    function proximaQuestao() {
+        indice++;
+        if (indice >= questoesAtuais.length) {
+            indice = 0; 
+        }
+        selecionadaId = null;
+        verificada = false;
+        document.getElementById("btn-proxima").style.display = "none";
+        carregarQuestao();
+    }
+
+    function filtrar(tipoFiltro) {
+        if (tipoFiltro === "acertos") {
+            questoesAtuais = questoesOriginais.filter(q => historico[q.id] === true);
+        } else if (tipoFiltro === "erros") {
+            questoesAtuais = questoesOriginais.filter(q => historico[q.id] === false);
+        } else {
+            questoesAtuais = [...questoesOriginais];
+        }
+
+        indice = 0;
+        selecionadaId = null;
+        verificada = false;
+        document.getElementById("btn-verificar").style.display = "none";
+        document.getElementById("btn-proxima").style.display = "none";
+        carregarQuestao();
+    }
+
+    carregarQuestao();
+</script>
+
+</body>
+</html>
